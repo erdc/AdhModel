@@ -1,0 +1,119 @@
+! ADH BC File - written by adhparam
+
+! Operation Parameters
+OP SW2
+OP INC 50
+OP TRN 0
+OP BLK 1
+OP PRE 1
+
+! Iteration Parameters
+IP NIT 10
+IP ITL 0.1
+IP MIT 200
+
+! Constituent Properties
+
+! Global Material Properties
+MP MU 1e-06
+MP G 9.81
+MP RHO 1000.0
+MP DTL 1.2
+MP MUC 1.0
+
+! Material Properties
+MP EVS 1 0.1 0.1 0.1
+MP SRT 1 1.0
+MP ML 1 0
+
+! Boundary Strings
+MTS 1 9 
+EGS 1 2 1
+EGS 2 3 1
+EGS 3 4 2
+EGS 4 5 2
+EGS 5 6 3
+EGS 6 7 3
+EGS 7 8 4
+EGS 8 9 4
+EGS 9 10 5
+EGS 10 11 5
+EGS 11 12 6
+EGS 12 13 6
+EGS 13 14 7
+EGS 14 15 7
+EGS 15 16 8
+
+! Time Series
+SERIES BC 1 20 2 0
+0.0 -0.775
+1.0 0.863
+2.0 2.18
+3.0 2.893
+4.0 2.867
+5.0 2.132
+6.0 0.9
+7.0 -0.478
+8.0 -1.574
+9.0 -1.988
+10.0 -1.559
+11.0 -0.47
+12.0 0.939
+13.0 2.319
+14.0 3.327
+15.0 3.679
+16.0 3.252
+17.0 2.088
+18.0 0.397
+19.0 -1.475
+
+SERIES BC 3 10 2 0
+0.0 24.0693196
+12.0 24.0693196
+36.0 22.65347727
+60.0 22.65347727
+84.0 22.65347727
+108.0 22.65347727
+132.0 22.65347727
+156.0 22.65347727
+180.0 22.65347727
+204.0 22.65347727
+
+SERIES BC 6 2 0 0
+0.0 0.0
+9999999999.0 0.0
+
+
+! Time step time series
+SERIES DT 5 3 0 0
+0.0 600.0
+20000.0 600.0
+9999999999.0 600.0
+
+
+! Output series
+SERIES AWRITE 4 1 0
+17712000.0 20995200.0 3600.0 0
+
+
+! Friction Controls
+FR MNG 9 0.025    
+
+! Output Control
+SOUT ALL
+
+! Solution Controls
+NB OTW 1 1  
+NB OTW 2 1  
+NB OTW 3 1  
+NB OTW 4 1  
+NB OTW 5 1  
+NB OTW 6 1  
+NB OTW 7 1  
+NB OTW 8 1  
+
+! Time Controls
+TC T0 17712000.0 0
+TC TF 20995200.0 0
+
+END

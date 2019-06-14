@@ -1,0 +1,82 @@
+! ADH BC File - written by adhparam
+
+! Operation Parameters
+OP SW2
+OP INC 40
+OP TRN 0
+OP BLK 1
+OP PRE 1
+
+! Iteration Parameters
+IP NIT 10
+IP NTL 1e-07
+IP ITL 1e-07
+IP MIT 100
+
+! Constituent Properties
+
+! Global Material Properties
+MP MU 1e-07
+MP G 9.8
+MP RHO 1000.0
+MP MUC 1.0
+
+! Material Properties
+MP EVS 1 0.001 0.001 0.001
+MP SRT 1 100.0
+MP ML 1 0
+MP EVS 2 0.001 0.001 0.001
+MP SRT 2 100.0
+MP ML 2 0
+MP EVS 3 0.001 0.001 0.001
+MP SRT 3 100.0
+MP ML 3 0
+
+! Boundary Strings
+MTS 1 1 
+MTS 2 2 
+MTS 3 3 
+
+! Time Series
+SERIES BC 3 2 0 0
+0.0 0.0
+100000.0 0.0
+
+SERIES BC 4 2 0 0
+0.0 0.001
+100000.0 0.001
+
+SERIES BC 5 2 0 0
+0.0 0.003
+100000.0 0.003
+
+
+! Time step time series
+SERIES DT 2 2 0 0
+0.0 50.0
+100000.0 50.0
+
+
+! Output series
+SERIES AWRITE 1 1 0
+0.0 100000.0 1000.0 0
+
+
+! Friction Controls
+FR MNG 1 0.0    
+FR MNG 2 0.0    
+FR MNG 3 0.0    
+
+! Output Control
+SOUT RESID
+SOUT MERROR
+
+! Solution Controls
+NB SOURCE 2 4  
+NB SOURCE 3 5  
+
+! Time Controls
+TC T0 0.0 0
+TC TF 10000.0 0
+
+END
