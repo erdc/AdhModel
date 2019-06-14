@@ -30,14 +30,9 @@ requirements:
     {% endfor %}
 
 test:
-  requires:
-    # dependencies are defined in setup.py
-    {% for dep in data['extras_require'] %}
-    - {{ dep.lower() }}
-    {% endfor %}
   imports:
-    - AdhModel
-    - AdhModel.simulation
+    - adhmodel
+    - adhmodel.simulation
 
 about:
   home: {{ data['url'] }}

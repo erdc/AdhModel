@@ -1,7 +1,7 @@
 # AdhModel
 | All | Windows | Mac |
 | --------- | --------- | ------------- |
-|[![Build Status](https://dev.azure.com/kimberlycpevey/kimberlycpevey/_apis/build/status/kcpevey.AdhModel?branchName=master)](https://dev.azure.com/kimberlycpevey/kimberlycpevey/_build/latest?definitionId=4&branchName=master)|[![Build Status](https://dev.azure.com/kimberlycpevey/kimberlycpevey/_apis/build/status/kcpevey.AdhModel?branchName=master&jobName=vs2017-win2016)](https://dev.azure.com/kimberlycpevey/kimberlycpevey/_build/latest?definitionId=4&branchName=master)|[![Build Status](https://dev.azure.com/kimberlycpevey/kimberlycpevey/_apis/build/status/kcpevey.AdhModel?branchName=master&jobName=macOS-10.13)](https://dev.azure.com/kimberlycpevey/kimberlycpevey/_build/latest?definitionId=4&branchName=master)
+|[![Build Status](https://dev.azure.com/kimberlycpevey/ERDC/_apis/build/status/erdc.AdhModel?branchName=master)](https://dev.azure.com/kimberlycpevey/ERDC/_build/latest?definitionId=7&branchName=master)|[![Build Status](https://dev.azure.com/kimberlycpevey/ERDC/_apis/build/status/erdc.AdhModel?branchName=master&jobName=vs2017-win2016)](https://dev.azure.com/kimberlycpevey/ERDC/_build/latest?definitionId=7&branchName=master)|[![Build Status](https://dev.azure.com/kimberlycpevey/ERDC/_apis/build/status/erdc.AdhModel?branchName=master&jobName=macOS-10.13)](https://dev.azure.com/kimberlycpevey/ERDC/_build/latest?definitionId=7&branchName=master)
 
   The AdhModel object contains all the data necessary to describe an AdH model. Each AdhModel contains an AdhMesh object and each mesh object contains one or more AdhSimulation objects. 
     
