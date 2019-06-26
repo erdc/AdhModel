@@ -56,7 +56,6 @@ class AdhMesh(Unstructured2D):
         #     self.param.result_time.objects = self.current_sim.param.time.objects
         #     self.result_time = self.current_sim.time
 
-
     def read(self, path, project_name='*', crs=None, fmt='nc'):
         file_path = Path(path)
         if not file_path.is_file():
@@ -85,8 +84,16 @@ class AdhMesh(Unstructured2D):
         self.tris = xarr.E3T.to_pandas()
         # TODO: why don't we just store the mesh as a xarray instead of pandas?
         file_crs = get_crs(xarr)
-        if crs is not file_crs:
-            log.warning('crs in object does not match file. Defaulting to file crs')
+
+        if crs:
+            if crs is not file_crs:
+                log.warning('Specified crs ({}) does not match file ({}). Defaulting to file crs'.format(
+                    crs, file_crs.proj4_params))
+                self.projection.set_crs(file_crs)
+
+            else:
+                self.projection.set_crs(crs)
+        else:
             self.projection.set_crs(file_crs)
 
     def to_xarray(self):
