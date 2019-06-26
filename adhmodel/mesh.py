@@ -86,9 +86,9 @@ class AdhMesh(Unstructured2D):
         file_crs = get_crs(xarr)
 
         if crs:
-            if crs is not file_crs:
+            if crs.proj4_params != file_crs.proj4_params:
                 log.warning('Specified crs ({}) does not match file ({}). Defaulting to file crs'.format(
-                    crs, file_crs.proj4_params))
+                    crs.proj4_params, file_crs.proj4_params))
                 self.projection.set_crs(file_crs)
 
             else:
