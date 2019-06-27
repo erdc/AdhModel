@@ -25,36 +25,10 @@ class AdhMesh(Unstructured2D):
     """"""
     current_sim = param.ClassSelector(default=AdhSimulation(), class_=AdhSimulation, precedence=-1)
 
-    # xarr = param.ClassSelector(default=xr.Dataset(), class_=xr.Dataset, precedence=-1)
-
     result_time = param.ObjectSelector()
 
     def __init__(self, **params):
-
         super(AdhMesh, self).__init__(**params)
-        # self.selected_result = None
-        # if xarr:
-        #     self.set_xarr(model=xarr)
-        # else:
-        #     # # set the vertices as a dataframe (reorganize indexing)
-        #     # self.verts = pd.DataFrame(data=[], columns=['x', 'y', 'z'])
-        #
-        #     # set the mesh points, reproject as needed
-        #     self.reproject_points()
-        #
-        #     # set the tris as a dataframe
-        #     self.tris = pd.DataFrame(data=[], columns=['v0', 'v1', 'v2', 'material'])
-        #
-        #     # create trimesh
-        #     self.tri_mesh = gv.TriMesh((self.tris[['v0', 'v1', 'v2']], self.mesh_points))
-        #
-        #     # # instantiate an empty simulation
-        #     # sim = AdhSimulation()
-        #     # # set the simulation into the simulation
-        #     # self.current_sim = sim
-        #
-        #     self.param.result_time.objects = self.current_sim.param.time.objects
-        #     self.result_time = self.current_sim.time
 
     def read(self, path, project_name='*', crs=None, fmt='nc'):
         file_path = Path(path)
@@ -80,8 +54,8 @@ class AdhMesh(Unstructured2D):
 
     def from_xarray(self, xarr, crs=None):
         self.name = xarr.nodes.attrs.get('MESHNAME').strip('\'').strip('"')
-        self.verts = xarr.nodes.to_pandas()
-        self.tris = xarr.E3T.to_pandas()
+        self.verts = xarr.nodes.to_pandas()  # store as one-based
+        self.tris = xarr.E3T.to_pandas() - 1  # store as zero-based (will be paired with mesh_points which uses zero-based indices)
         # TODO: why don't we just store the mesh as a xarray instead of pandas?
         file_crs = get_crs(xarr)
 
@@ -95,6 +69,9 @@ class AdhMesh(Unstructured2D):
                 self.projection.set_crs(crs)
         else:
             self.projection.set_crs(file_crs)
+
+        self.reproject_points()
+        self.tri_mesh = gv.TriMesh((self.tris[['v0', 'v1', 'v2']], self.mesh_points))
 
     def to_xarray(self):
         mesh_ds = xr.DataSet()
@@ -119,7 +96,7 @@ class AdhMesh(Unstructured2D):
             mesh_file.write('MESH2D\n')
             if len(self.name) > 0:
                 mesh_file.write('MESHNAME "{0}"\n'.format(self.name))
-        nodes = self.tris.copy()
+        nodes = self.tris.copy() + 1
         nodes.insert(0, 'id', nodes.index)
         nodes.insert(0, 'card', 'E3T', allow_duplicates=True)
         nodes.to_csv(file_name, mode='a', sep=' ', index=False, header=False, line_terminator='',
@@ -136,83 +113,6 @@ class AdhMesh(Unstructured2D):
         self.mesh_points = gv.operation.project_points(
              gv.Points(self.verts[['x', 'y', 'z']], vdims=['z'], crs=self.projection.get_crs()),
              projection=ccrs.GOOGLE_MERCATOR)
-
-    # def set_xarr(self, model):
-    #     # get the vertices as a dataframe (reorganize indexing)
-    #     self.verts = model.nodes.to_pandas().reset_index(level=0, drop=True)
-    #
-    #     # set the mesh points, reproject as needed
-    #     self.reproject_points()
-    #
-    #     # get the tris as a dataframe
-    #     self.tris = model.E3T.to_pandas().reset_index(level=0, drop=True) - 1  # todo does this assign material column properly
-    #
-    #     # create trimesh
-    #     self.tri_mesh = gv.TriMesh((self.tris[['v0', 'v1', 'v2']], self.mesh_points))
-    #
-    #     # instantiate an empty simulation
-    #     sim = AdhSimulation()
-    #     # set the simulation into the simulation
-    #     sim.set_result(model)
-    #     # add the simulation to the simulation_list
-    #     # self.simulations[str(sim.id)] = sim
-    #     # self.param.simulation_list.names[str(sim.id)] = sim
-    #     # self.param.simulation_list.objects.append(sim)
-    #     self.current_sim = sim
-    #
-    #     self.param.result_time.objects = self.current_sim.param.time.objects
-    #     self.result_time = self.current_sim.time
-    #
-    # # function for dynamic map call
-    # # @param.depends('result_time')
-    # @param.depends('current_sim.time')  # todo THIS THROWS AN ERROR!!!!!
-    # def time_mesh_scalar(self):
-    #     # sim = self.simulations[self.sim_selector]
-    #     result = self.current_sim.result_label
-    #     # add this time step's data as a vdim under the provided label
-    #     data_points = self.mesh_points.add_dimension(result, 0,
-    #                                                  self.current_sim.results[self.selected_result].sel(times=self.current_sim.time).data,
-    #                                                  vdim=True)
-    #
-    #     # return a trimesh with this data
-    #     return gv.TriMesh((self.tris[['v0', 'v1', 'v2']], data_points), label=self.selected_result,
-    #                       crs=ccrs.GOOGLE_MERCATOR)
-    #
-    # @param.depends('current_sim.time')
-    # def time_mesh_vector(self):
-    #     # sim = self.mesh.simulations[self.sim_selector]
-    #     # result = self.current_sim.result_label
-    #
-    #     vx = self.current_sim.results[self.selected_result].sel(times=self.current_sim.time).data[:, 0]
-    #     vy = self.current_sim.results[self.selected_result].sel(times=self.current_sim.time).data[:, 1]
-    #     xs = self.mesh_points.data['x']
-    #     ys = self.mesh_points.data['y']
-    #     with np.errstate(divide='ignore', invalid='ignore'):
-    #         angle = np.arctan2(vy, vx)
-    #     mag = np.sqrt(vx ** 2 + vy ** 2)
-    #     return gv.VectorField((xs, ys, angle, mag), vdims=['Angle', 'Magnitude'],
-    #                           crs=ccrs.GOOGLE_MERCATOR)
-    #
-    # @param.depends('current_sim.result_label')
-    # def create_animation(self):
-    #     """ Method to create holoviews dynamic map meshes for vector or scalar datasets"""
-    #     # sim = self.mesh.simulations[self.sim_selector]
-    #     # result = self.current_sim.result_label
-    #
-    #     # check to make sure the mesh points have been set.
-    #     if self.mesh_points.data.empty:
-    #         self.reproject_points()
-    #
-    #     if 'BEGSCL' in self.current_sim.results[self.selected_result].attrs.keys():
-    #         meshes = hv.DynamicMap(self.time_mesh_scalar, label='scalar')
-    #         return meshes
-    #
-    #     elif 'BEGVEC' in self.current_sim.results[self.selected_result].attrs.keys():
-    #         meshes = hv.DynamicMap(self.time_mesh_vector, label='vector')
-    #         return meshes
-    #
-    #     else:
-    #         log.error('Data type not recognized. Must be BEGSCL or BEGVEC.')
 
     def validate(self):
         """
