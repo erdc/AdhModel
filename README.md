@@ -8,9 +8,12 @@
   The AdhModel object is not directly tied to any visualization package. While it does contain Holoviews objects, these may be rendered with either Bokeh or Matplotlib.  
     
 ### Installation
+To install this packaged from conda:  
+`conda install -c erdc -c pyviz/label/dev -c conda-forge adhmodel`  
+  
 To create an environment from the adhmodel conda package (which is on the erdc conda channel), all of the channel dependencies must be included:    
 `conda create -n adhmodel -c erdc -c conda-forge -c aquaveo -c pyviz/label/dev adhmodel`
-  
+ 
 ### Structure
 * AdhModel
   * AdhMesh
