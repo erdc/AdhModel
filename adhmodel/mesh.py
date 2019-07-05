@@ -30,7 +30,7 @@ class AdhMesh(Unstructured2D):
     def __init__(self, **params):
         super(AdhMesh, self).__init__(**params)
 
-    def read(self, path, project_name='*', crs=None, fmt='nc'):
+    def read(self, path, project_name='*', crs=ccrs.UTM(1), fmt='nc'):
         file_path = Path(path)
         if not file_path.is_file():
             file_path = file_path / f'{project_name}.{fmt}'
@@ -52,7 +52,7 @@ class AdhMesh(Unstructured2D):
             raise ValueError(f'Unsupported format. Must be one of {fmts.keys()}')
         return fmts[fmt](file_name)
 
-    def from_xarray(self, xarr, crs=None):
+    def from_xarray(self, xarr, crs=ccrs.UTM(1)):
         self.name = xarr.nodes.attrs.get('MESHNAME').strip('\'').strip('"')
         self.verts = xarr.nodes.to_pandas()  # store as one-based
         self.tris = xarr.E3T.to_pandas() - 1  # store as zero-based (will be paired with mesh_points which uses zero-based indices)

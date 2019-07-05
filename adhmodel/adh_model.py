@@ -8,6 +8,9 @@ from geoviews import Path as GeoPath
 from genesis.model import Model
 from .mesh import AdhMesh
 
+import holoviews.plotting.bokeh
+import geoviews.plotting.bokeh
+
 log = logging.getLogger('AdhModel.adh_model')
 
 
