@@ -1,7 +1,15 @@
-import os, param
+import os
+import param
+import logging
+
+from holoviews import Path
+from geoviews import Path as GeoPath
+
 from genesis.model import Model
 from .mesh import AdhMesh
-import logging
+
+import holoviews.plotting.bokeh
+import geoviews.plotting.bokeh
 
 log = logging.getLogger('AdhModel.adh_model')
 
@@ -39,7 +47,13 @@ class AdhModel(Model):
         doc='Global project name'
     )
 
-    units = param.ObjectSelector(default='meters', objects=['meters', 'feet'])
+    units = param.ObjectSelector(
+        default='meters',
+        objects=['meters', 'feet']
+    )
+
+    path_type = param.ClassSelector(default=GeoPath, class_=Path, is_instance=False, doc="""
+             The element type to draw into.""")
 
     def __init__(self, **params):
         super(AdhModel, self).__init__(**params)
@@ -120,8 +134,10 @@ class AdhModel(Model):
         Returns:
             None
         """
+        # set the mesh file name
+        mesh_file = os.path.join(f'{kwargs["path"]}', f'{kwargs["project_name"]}.3dm')
         # read mesh
-        self.read_mesh(*args, **kwargs)
+        self.read_mesh(mesh_file, project_name=kwargs['project_name'], crs=kwargs['crs'], fmt='3dm')
         # set hotstart file name
         hot_file = os.path.join(f'{kwargs["path"]}', f'{kwargs["project_name"]}.hot')
         # read hotstart
@@ -130,7 +146,7 @@ class AdhModel(Model):
         bc_file = os.path.join(f'{kwargs["path"]}', f'{kwargs["project_name"]}.bc')
         self.read_bc(bc_file, fmt='bc')
         # read results
-        self.read_results(*args, **kwargs)
+        self.read_results(kwargs['path'], project_name=kwargs['project_name'], fmt='ascii')
 
     def read_mesh(self, *args, **kwargs):
         return self.mesh.read(*args, **kwargs)

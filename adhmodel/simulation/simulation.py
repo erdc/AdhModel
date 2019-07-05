@@ -555,7 +555,6 @@ class AdhSimulation(Simulation):
 
     def __init__(self, **params):
         super(Simulation, self).__init__(**params)
-        self.selected_result = None
 
     def read_bc(self, *args, **kwargs):
         self.boundary_conditions.read(*args, **kwargs)
@@ -604,9 +603,6 @@ class AdhSimulation(Simulation):
             else:
                 file_list = None
             self.results = parse_dat_files(dat_path, project_name=project_name, file_list=file_list)
-
-        # set random dataset as selected result
-        self.selected_result = set(self.results.data_vars).pop()
 
     def _subset_xarray_vars_by_coords(self, dataset, coords):
         # determine what attributes are results

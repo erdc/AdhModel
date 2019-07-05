@@ -1,4 +1,4 @@
-name: AdhModel
+name: adhmodel
 
 channels:
     - pyviz/label/earthsim
