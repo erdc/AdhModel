@@ -5,7 +5,9 @@
 
   The AdhModel object contains all the data necessary to describe an AdH model. Each AdhModel contains an AdhMesh object and each mesh object contains one or more AdhSimulation objects. 
     
-  The AdhModel object is not directly tied to any visualization package. While it does contain Holoviews objects, these may be rendered with either Bokeh or Matplotlib.  
+  The AdhModel object is not directly tied to any visualization package. While it does contain Holoviews objects, 
+  these may be rendered with either Bokeh or Matplotlib. AdhModel has its own visualization package, AdhUI 
+  (https://github.com/erdc/AdhUI).  
     
 ### Installation
 To install this packaged from conda:  
