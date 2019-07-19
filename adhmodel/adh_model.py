@@ -1,11 +1,12 @@
 import os
 import param
 import logging
-
+import cartopy.crs as ccrs
 from holoviews import Path
 from geoviews import Path as GeoPath
 
 from genesis.model import Model
+from genesis.util import Projection
 from .mesh import AdhMesh
 
 import holoviews.plotting.bokeh
@@ -55,9 +56,20 @@ class AdhModel(Model):
     path_type = param.ClassSelector(default=GeoPath, class_=Path, is_instance=False, doc="""
              The element type to draw into.""")
 
+    mesh = param.ClassSelector(class_=AdhMesh)
+
     def __init__(self, **params):
         super(AdhModel, self).__init__(**params)
-        self.mesh = AdhMesh(crs=self.projection.get_crs())
+        proj = Projection()
+        if 'crs' in params:
+            proj.set_crs(params['crs'])
+        else:
+            proj.set_crs(ccrs.GOOGLE_MERCATOR)
+        self.mesh = AdhMesh(projection=proj)
+
+    @property
+    def projection(self):
+        return self.mesh.projection
 
     @property
     def simulation(self):
