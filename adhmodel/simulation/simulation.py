@@ -66,13 +66,14 @@ class BoundaryConditions(param.Parameterized):
             'FGT, SLUICE, SLS.',
     )
     stage_discharge_boundary = param.DataFrame(
-        default=None,
+        default=pd.DataFrame(data=[], columns=['CARD', 'S_ID', 'COEF_A', 'COEF_B', 'COEF_C', 'COEF_D', 'COEF_E']),
         doc='Columns [CARD, S_ID, COEF_A, COEF_B, COEF_C, COEF_D, COEF_E], '
             'NB SDR: Stage discharge boundary. S_ID: String id, COEF_A: coeficient A, COEF_B: coeficient B, '
             'COEF_C: coeficient C, COEF_D: coeficient D, COEF_E: coeficient E.',
     )
     friction_controls = param.DataFrame(
-        default=None,
+        default=pd.DataFrame(data=[], columns=["CARD", "CARD_2", "STRING_ID", "REAL_01", "REAL_02",
+            "REAL_03", "REAL_04", "REAL_05"]),
         doc='Columns for this DataFrame ["CARD", "CARD_2", "STRING_ID", "REAL_01", "REAL_02", '
             '"REAL_03", "REAL_04", REAL_05"]. '
             'This holds information for the following: '
@@ -96,7 +97,8 @@ class BoundaryConditions(param.Parameterized):
                 "thickness of bridge deck",
     )
     breach_controls = param.DataFrame(
-        default=None,
+        default=pd.DataFrame(data=[], columns=['CARD', 'CARD_1', 'C_00', 'C_01', 'C_02', 'C_03', 'C_04',
+                                               'C_05', 'C_06', 'C_07', 'C_08', 'C_09']),
         doc='[CARD][CARD_1][C_00][C_01]...[C_09]'
             'BR JAI S_ID BREACH_SEC WIDTH MIN_ELEV CREST_ELEV FAIL_TIME FURTHEST CLOSEST - Breach johnson and illes, '
                 'S_ID: string id, BREACH_SEC: breach section, WIDTH: width of main breach, MIN_ELEV: min breach elev, '
@@ -130,14 +132,16 @@ class BoundaryConditions(param.Parameterized):
                 'slope node closest to breach, ',
     )
     weirs = param.DataFrame(
-        default=None,
+        default=pd.DataFrame(data=[], columns=['WRS NUMBER', 'S_UPSTREAM', 'S_DOWNSTREAM', 'WS_UPSTREAM',
+                                               'WS_DOWNSTREAM', 'LENGTH', 'CREST_ELEV', 'HEIGHT']),
         doc='WRS NUMBER S_UPSTREAM S_DOWNSTREAM WS_UPSTREAM WS_DOWNSTREAM LENGTH CREST_ELEV HEIGHT - Weir Parameters, '
                 'NUMBER: Weir number, S_UPSTREAM: string upstream of weir, S_DOWNSTREAM: string downstream of weir, '
                 'NUMBER: weir number, WS_UPSTREAM: weir string on upstream, WS_DOWNSTREAM: weir string on downstream, '
                 'LENGTH: length of weir, CREST_ELEV: crest elevation, HEIGHT: weir height',
     )
     flap_gates = param.DataFrame(
-        default=None,
+        default=pd.DataFrame(data=[], columns=['FGT NUMBER', 'USER', 'S_UPSTREAM', 'S_DOWNSTREAM', 'FS_UPSTREAM',
+                                               'FS_DOWNSTREAM', 'COEF_A', 'COEF_B', 'COEF_C', 'COEF_D', 'COEF_E']),
         doc='FGT NUMBER USER S_UPSTREAM S_DOWNSTREAM FS_UPSTREAM FS_DOWNSTREAM COEF_A COEF_B COEF_C COEF_D COEF_E '
                 'COEF_F LENGTH - Flap gate parameters, NUMBER: flap gate number, USER: user defined parameters, '
                 'S_UPSTREAM: string upstream of flap, S_DOWNSTREAM: string downstream of flap, FS_UPSTREAM: flap '
@@ -146,7 +150,8 @@ class BoundaryConditions(param.Parameterized):
                 'COEF_F: coeficient F, LENGTH: length of flap gate',
     )
     sluice_gates = param.DataFrame(
-        default=None,
+        default=pd.DataFrame(data=[], columns=['SLS NUMBER', 'S_UPSTREAM', 'S_DOWNSTREAM', 'SS_UPSTREAM',
+                                               'SS_DOWNSTREAM', 'LENGTH', 'TS_OPENING']),
         doc='SLS NUMBER S_UPSTREAM S_DOWNSTREAM SS_UPSTREAM SS_DOWNSTREAM LENGTH TS_OPENING - Sluice gate parameters, '
                 'NUMBER: sluice gate number, S_UPSTREAM: string upstream of sluice gate, S_DOWNSTREAM: string '
                 'downstream of sluice gate, SS_UPSTREAM: sluice string on upstream, SS_DOWNSTREAM: sluice string on '
