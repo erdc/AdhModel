@@ -353,19 +353,17 @@ def get_string_by_card(all_strings, card=None, string_number=None):
     """Reduce the boundary_strings dataframe to a single card type or
     a single string number
 
-    Parameters
-    ----------
-    all_strings - dataframe
-        AdhSimulation.BoundaryCondition.boundary_strings dataframe
-    card - string
-        String card to extract from the dataframe (e.g. 'EGS', 'NDS', 'MTS')
-    string_number - integer
-        Number of the string to extract
+    Args:
+        all_strings: dataframe
+            AdhSimulation.BoundaryCondition.boundary_strings dataframe
+        card: string
+            String card to extract from the dataframe (e.g. 'EGS', 'NDS', 'MTS')
+        string_number: integer
+            Number of the string to extract
 
-    Returns
-    -------
-    subset - dataframe
-        subset dataframe containing only the requested cards and/or string
+    Returns:
+        subset - dataframe
+            subset dataframe containing only the requested cards and/or string
 
     """
     if card:
@@ -388,14 +386,16 @@ def string_to_list(string_df, column_1='ID', column_2='ID_0'):
     AdH Boundary Strings are 2 column format, each row consists of two nodes that make
     up one edge. The second node is repeated as the first node on the next row
 
-    Parameters
-    ---------
-    string_df - dataframe
-        Boundary string dataframe (already reduced to a single string)
-    column_1 - string
-        Dataframe column label of the first vertex of the edge
-    column_2 - string
-        Dataframe column label for the second vertex of the edge
+    Args:
+        string_df: dataframe
+            Boundary string dataframe (already reduced to a single string)
+        column_1: string
+            Dataframe column label of the first vertex of the edge
+        column_2: string
+            Dataframe column label for the second vertex of the edge
+
+    Returns:
+        Boundary string nodes as a list
 
     """
     # get the string series as a list
@@ -407,7 +407,17 @@ def string_to_list(string_df, column_1='ID', column_2='ID_0'):
 
 
 def get_boundary_string_path(mesh, node_list):
-    """Convert a node list into path object"""
+    """Convert a node list into path object
+
+    Args:
+        mesh: AdhMesh object
+        node_list: List of nodes numbers with which to generate the path
+            Nodes should be one-based since AdhMesh.verts index is one-based.
+
+    Returns:
+        Geoviews path object
+    """
+
     path = gv.Path(mesh.verts.loc[node_list], crs=mesh.projection.get_crs())
     return path
 
