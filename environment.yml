@@ -42,7 +42,7 @@ dependencies:
     - bokeh >=1.1.0
     - pyviz_comms >=0.6.0
     - nodejs >=9.11.1
-    - earthsim
+    - earthsim >=1.1.1a2
     - jupyterlab
     - genesis
     # for testing
