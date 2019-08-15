@@ -3,7 +3,7 @@ name: adhmodel
 channels:
     - pyviz/label/earthsim
     - pyviz/label/dev
-    - bokeh
+    - erdc/label/dev
     - erdc
     - conda-forge
     - aquaveo
@@ -20,7 +20,7 @@ dependencies:
     - holoviews>=1.12.3
     - datashader>=0.7.0
     - geoviews>=1.6.2
-    - panel>=0.5.0
+    - panel>=0.6.0
     - bokeh>=1.1.0
     - cartopy>=0.17.0
     - xarray>=0.11.0
@@ -44,7 +44,7 @@ dependencies:
     - nodejs >=9.11.1
     - earthsim >=1.1.1a2
     - jupyterlab
-    - genesis
+    - genesis>=0.0.5
     # for testing
     - pytest
     - pyflakes
