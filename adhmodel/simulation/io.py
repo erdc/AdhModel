@@ -947,7 +947,7 @@ def write_fr_cards(bc_file, bc_class):
         bc_class: The ADH simulation class that holds all simulation information
     """
     fr = bc_class.friction_controls
-    if fr is not None:
+    if not fr.empty:
         bc_file.write('! Friction Controls\n')
         bc_file.write(fr.to_csv(sep=' ', na_rep='', index=False, header=False,).replace('\r\n', '\n'))
         bc_file.write('\n')  # blank line after Friction Controls
@@ -967,7 +967,7 @@ def write_pc_cards(bc_file, bc_class):
     if oc.output_control_option == objects[0]:
         bc_file.write('OC {}\n'.format(oc.oc_time_series_id))
     ofs = oc.output_flow_strings
-    if ofs is not None:
+    if not ofs.empty:
         bc_file.write(ofs.to_csv(sep=' ', na_rep='', index=False, header=False,).replace('\r\n', '\n'))
 
     if oc.print_adaptive_mesh:
@@ -1010,11 +1010,11 @@ def write_solution_control_cards(bc_file, bc_class):
     """
     bc_file.write('! Solution Controls\n')
     sc = bc_class.solution_controls
-    if sc is not None:
+    if not sc.empty:
         bc_file.write(sc.to_csv(sep=' ', na_rep='', index=False, header=False,).replace('\r\n', '\n'))
 
     nb_sdr = bc_class.stage_discharge_boundary
-    if nb_sdr is not None:
+    if not nb_sdr.empty:
         bc_file.write(nb_sdr.to_csv(sep=' ', na_rep='', index=False, header=False, ).replace('\r\n', '\n'))
 
     if bc_class.constituent_properties.temperature:
@@ -1024,17 +1024,17 @@ def write_solution_control_cards(bc_file, bc_class):
     write_breach_control_cards(bc_file, bc_class)
 
     wer = bc_class.weirs
-    if wer is not None:
+    if not wer.empty:
         bc_file.write('WER {}\n'.format(len(wer.index)))
         bc_file.write(wer.to_csv(sep=' ', na_rep='', index=False, header=False,).replace('\r\n', '\n'))
 
     flp = bc_class.flap_gates
-    if flp is not None:
+    if not flp.empty:
         bc_file.write('FLP {}\n'.format(len(flp.index)))
         bc_file.write(flp.to_csv(sep=' ', na_rep='', index=False, header=False,).replace('\r\n', '\n'))
 
     sls = bc_class.sluice_gates
-    if sls is not None:
+    if not sls.empty:
         bc_file.write('SLUICE {}\n'.format(len(sls.index)))
         bc_file.write(sls.to_csv(sep=' ', na_rep='', index=False, header=False,).replace('\r\n', '\n'))
 
@@ -1050,7 +1050,7 @@ def write_breach_control_cards(bc_file, bc_class):
         bc_class: The ADH simulation class that holds all simulation information
     """
     br = bc_class.breach_controls
-    if br is None:
+    if br.empty:
         return
     format_dict = {'JAI': [str, str, int,     int, float, float, float, float,   int,   int],
                    'SAS': [str, str, int,     int, float, float, float, float,   int,   int],

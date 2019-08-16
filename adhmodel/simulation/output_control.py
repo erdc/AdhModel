@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import param
+import pandas as pd
 import panel as pn
 
 
@@ -17,7 +18,7 @@ class OutputControl(param.Parameterized):
         precedence=2,
     )
     output_flow_strings = param.DataFrame(
-        default=None,
+        default=pd.DataFrame(data=[], columns=['CARD', 'S_ID']),
         doc='FLX: CARD S_ID, '
             'CARD - FLX, '
             'S_ID - String ID for mid string or edge string for which flow is to be output.',
